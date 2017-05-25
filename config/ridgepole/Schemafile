@@ -1,0 +1,8 @@
+# 作業記録
+create_table "games", force: :cascade do |t|
+
+  t.boolean  "deleted",      default: false,    comment:"削除フラグ"
+  t.datetime "deleted_date",                    comment:"削除日時"
+  t.datetime "created",                         comment:"登録日時"
+  t.datetime "modified",                        comment:"更新日時"
+end
