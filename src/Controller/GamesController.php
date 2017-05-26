@@ -27,6 +27,21 @@ class GamesController extends AppController
     }
 
     /**
+     * saveApiData method
+     *
+     * @param string|null $id Game id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function saveApiData($id = null)
+    {
+        //データ取得するAPIのURL
+        $uri = 'http://api.football-data.org/v1/teams/81/fixtures';
+        $apiData = $this->GetApiData->getApi($uri);
+
+    }
+
+    /**
      * View method
      *
      * @param string|null $id Game id.
