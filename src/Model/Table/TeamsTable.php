@@ -1,10 +1,12 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Table\AppTable;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+
 
 /**
  * Teams Model
@@ -22,7 +24,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TeamsTable extends Table
+class TeamsTable extends AppTable
 {
 
     /**
@@ -96,5 +98,25 @@ class TeamsTable extends Table
         $rules->add($rules->existsIn(['league_id'], 'Leagues'));
 
         return $rules;
+    }
+
+    /**
+     * makeSaveQuery
+     *
+     */
+    public function makeSaveQuery($data)
+    {
+        $saveData = [];
+        //自身のidの取り出し
+        $selfId = $this->fetchTeamLinkId($data);
+        $saveData['id'] = $selfId;
+
+        //値をセット
+        $saveData['name'] = $data->name;
+        $saveData['code'] = $data->code;
+        $saveData['shortName'] = $data->shortName;
+        $saveData['crest_url'] = $data->crestUrl;
+
+        return $saveData;
     }
 }

@@ -71,7 +71,7 @@ abstract class AppTable extends Table
      * @author hirosawa
      */
     public function fetchTeamLinkId($data) {
-        $selfLink = strstr($data->_links->team->href, 'teams/',false);
+        $selfLink = strstr($data->_links->self->href, 'teams/',false);
         $selfId = intval(str_replace('teams/','',$selfLink));
 
         return $selfId;

@@ -27,6 +27,52 @@ class TeamsController extends AppController
     }
 
     /**
+     * saveApiData method
+     *
+     * @param string|null $id Game id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function saveApiData($leagueId)
+    {
+        //todo : ここは1チームからの目線で見た年間の試合スケジュール情報
+        //データ取得するAPIのURL
+        //チームidでチームを決定
+        $uri = 'http://api.football-data.org/v1/competitions/'. $leagueId .'/teams';
+        $apiData = $this->GetApiData->getApi($uri);
+
+        $hasError = false;
+        foreach ($apiData->teams as $data) {
+            //API取得したデータをカラムに合わせる
+            $saveData = $this->Teams->makeSaveQuery($data);
+
+            //保存
+            //insertもupdateもあり得る。→いずれにせよ、idを指定する。
+            $id = $saveData['id'];
+            $team = $this->Teams->newEntity();
+            //newEntityしたため、id再指定
+            $team['id'] = $id;
+            $team['league_id'] = $leagueId;
+
+            $d = $this->Teams->patchEntity($team, $saveData);
+            if (!$this->Teams->save($d)) {
+                $this->log($id.'not saved');
+                $hasError = true;
+            }
+
+        }
+        if ($hasError) {
+            $this->Flash->error(__('Has Error. Please check logs'));
+        } else {
+            $this->Flash->success(__('saved'));
+
+        }
+        return $this->redirect(['action' => 'index']);
+
+    }
+
+
+    /**
      * View method
      *
      * @param string|null $id Team id.
