@@ -86,4 +86,22 @@ class LeaguesTable extends Table
 
         return $validator;
     }
+
+    /**
+     * makeSaveQuery
+     *
+     */
+    public function makeSaveQuery($data)
+    {
+        $saveData = [];
+        //値をセット
+        $saveData['id'] = $data->id;
+        $saveData['name'] = $data->caption;
+        $saveData['code'] = $data->league;
+        $saveData['year'] = $data->year;
+        $saveData['current_matchday'] = $data->currentMatchday;
+        $saveData['number_of_teams'] = $data->numberOfTeams;
+
+        return $saveData;
+    }
 }

@@ -74,8 +74,8 @@ class GamesTable extends AppTable
             $selfId = $this->fetchGameLinkId($data);
             $saveData['id'] = $selfId;
             //league_idの取り出し
-            $selfId = $this->fetchLeagueLinkId($data);
-            $saveData['league_id'] = $selfId;
+            $leagueId = $this->fetchLeagueLinkId($data);
+            $saveData['league_id'] = $leagueId;
             //home_team_idの取り出し
             $homeId = $this->fetchHomeTeamLinkId($data);
             $saveData['home_team_id'] = $homeId;

@@ -27,6 +27,48 @@ class LeaguesController extends AppController
     }
 
     /**
+     * saveApiData method
+     *
+     * @param string|null $id Game id.
+     * @return \Cake\Http\Response|null Redirects to index.
+     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
+     */
+    public function saveApiData()
+    {
+        //todo : リーグすべての情報を取得
+        //データ取得するAPIのURL
+        $uri = 'http://api.football-data.org/v1/competitions';
+        $apiData = $this->GetApiData->getApi($uri);
+
+        $hasError = false;
+        foreach ($apiData as $data) {
+            //API取得したデータをカラムに合わせる
+            $saveData = $this->Leagues->makeSaveQuery($data);
+
+            //保存
+            $id = $saveData['id'];
+            $league = $this->Leagues->newEntity();
+            //newEntityしたため、id再指定
+            $league['id'] = $id;
+            $d = $this->Leagues->patchEntity($league, $saveData);
+            if (!$this->Leagues->save($d)) {
+                $this->log($id.'not saved');
+                $hasError = true;
+            }
+
+        }
+        if ($hasError) {
+            $this->Flash->error(__('Has Error. Please check logs'));
+        } else {
+            $this->Flash->success(__('saved'));
+
+        }
+        return $this->redirect(['action' => 'index']);
+
+    }
+
+
+    /**
      * View method
      *
      * @param string|null $id League id.
