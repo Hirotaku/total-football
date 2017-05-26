@@ -1,5 +1,64 @@
-# 作業記録
+# 試合
 create_table "games", force: :cascade do |t|
+  t.datetime "date",                            comment:"試合日時"
+  t.string   "status",                           comment:"試合ステータス"
+  t.integer  "league_id",                        comment:"リーグid"
+  t.string   "matchday",                         comment:"節"
+  t.integer  "home_team_id",                     comment:"ホームチームid"
+  t.string   "home_team_name",                   comment:"ホームチーム名"
+  t.integer  "away_team_id",                     comment:"アウェイチームid"
+  t.string   "away_team_name",                   comment:"アウェイチーム名"
+  t.string   "goals_home_team",                  comment:"ホームチームゴール数"
+  t.string   "goals_away_team",                  comment:"アウェイチームゴール数"
+  t.string   "half_goals_home_team",             comment:"前半ホームチームゴール数"
+  t.string   "half_goals_away_team",             comment:"前半アウェイチームゴール数"
+
+  t.string   "first_half_memo",                  comment:"前半総括"
+  t.string   "second_half_memo",                 comment:"前半総括"
+  t.string   "total_memo",                       comment:"前半総括"
+
+  t.boolean  "deleted",      default: false,    comment:"削除フラグ"
+  t.datetime "deleted_date",                    comment:"削除日時"
+  t.datetime "created",                         comment:"登録日時"
+  t.datetime "modified",                        comment:"更新日時"
+end
+
+# リーグ
+create_table "leagues", force: :cascade do |t|
+  t.string   "name",                             comment:"リーグ名"
+  t.string   "code",                             comment:"略称"
+  t.string   "year",                             comment:"年"
+  t.string   "current_matchday",                 comment:"節数"
+  t.string   "number_of_teams",                  comment:"総チーム数"
+
+  t.boolean  "deleted",      default: false,    comment:"削除フラグ"
+  t.datetime "deleted_date",                    comment:"削除日時"
+  t.datetime "created",                         comment:"登録日時"
+  t.datetime "modified",                        comment:"更新日時"
+end
+
+# チーム
+create_table "teams", force: :cascade do |t|
+  t.integer  "league_id",                        comment:"リーグid"
+  t.string   "name",                             comment:"チーム名"
+  t.string   "code",                             comment:"略称"
+  t.string   "short_name",                       comment:"略称"
+  t.string   "crest_url",                        comment:"エンブレム画像URL"
+
+  t.boolean  "deleted",      default: false,    comment:"削除フラグ"
+  t.datetime "deleted_date",                    comment:"削除日時"
+  t.datetime "created",                         comment:"登録日時"
+  t.datetime "modified",                        comment:"更新日時"
+end
+
+# プレイヤー
+create_table "players", force: :cascade do |t|
+  t.integer  "team_id",                          comment:"チームid"
+  t.string   "name",                             comment:"プレイヤー名"
+  t.string   "position",                         comment:"ポジション"
+  t.string   "number",                           comment:"背番号"
+  t.string   "birthday",                         comment:"誕生日"
+  t.string   "nationality",                      comment:"国籍"
 
   t.boolean  "deleted",      default: false,    comment:"削除フラグ"
   t.datetime "deleted_date",                    comment:"削除日時"
