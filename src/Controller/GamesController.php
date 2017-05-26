@@ -33,11 +33,39 @@ class GamesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function saveApiData($id = null)
+    public function saveApiData($teamId)
     {
+        //todo : ここは1チームからの目線で見た年間の試合スケジュール情報
         //データ取得するAPIのURL
-        $uri = 'http://api.football-data.org/v1/teams/81/fixtures';
+        //チームidでチームを決定
+        $uri = 'http://api.football-data.org/v1/teams/'. $teamId .'/fixtures';
         $apiData = $this->GetApiData->getApi($uri);
+
+        $hasError = false;
+        foreach ($apiData->fixtures as $data) {
+        //API取得したデータをカラムに合わせる
+        $saveData = $this->Games->makeSaveQuery($data);
+
+        //保存
+        //insertもupdateもあり得る。→いずれにせよ、idを指定する。
+            $id = $saveData['id'];
+            $game = $this->Games->newEntity();
+            //newEntityしたため、id再指定
+            $game['id'] = $id;
+            $d = $this->Games->patchEntity($game, $saveData);
+            if (!$this->Games->save($d)) {
+                $this->log($id.'not saved');
+                $hasError = true;
+            }
+
+        }
+        if ($hasError) {
+            $this->Flash->error(__('Has Error. Please check logs'));
+        } else {
+            $this->Flash->success(__('saved'));
+
+        }
+        return $this->redirect(['action' => 'index']);
 
     }
 

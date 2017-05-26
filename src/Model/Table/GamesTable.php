@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Table\AppTable;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -19,7 +20,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class GamesTable extends Table
+class GamesTable extends AppTable
 {
 
     /**
@@ -60,5 +61,40 @@ class GamesTable extends Table
             ->allowEmpty('deleted_date');
 
         return $validator;
+    }
+
+    /**
+     * makeSaveQuery
+     *
+     */
+    public function makeSaveQuery($data)
+    {
+            $saveData = [];
+            //自身のidの取り出し
+            $selfId = $this->fetchGameLinkId($data);
+            $saveData['id'] = $selfId;
+            //league_idの取り出し
+            $selfId = $this->fetchLeagueLinkId($data);
+            $saveData['league_id'] = $selfId;
+            //home_team_idの取り出し
+            $homeId = $this->fetchHomeTeamLinkId($data);
+            $saveData['home_team_id'] = $homeId;
+            //away_team_idの取り出し
+            $awayId = $this->fetchAwayTeamLinkId($data);
+            $saveData['away_team_id'] = $awayId;
+
+            //値をセット
+            $saveData['date'] = $data->date;
+            $saveData['status'] = $data->status;
+            $saveData['matchday'] = $data->matchday;
+            $saveData['home_team_name'] = $data->homeTeamName;
+            $saveData['away_team_name'] = $data->awayTeamName;
+            $saveData['goals_home_team'] = $data->result->goalsHomeTeam;
+            $saveData['goals_away_team'] = $data->result->goalsAwayTeam;
+            //上手く取れない。。
+//            $saveData['half_goals_home_team'] = $data->result->halfTime->goalsHomeTeam;
+//            $saveData['half_goals_away_team'] = $data->result->halfTime->goalsAwayTeam;
+
+        return $saveData;
     }
 }
