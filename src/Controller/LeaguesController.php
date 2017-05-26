@@ -4,13 +4,13 @@ namespace App\Controller;
 use App\Controller\AppController;
 
 /**
- * Games Controller
+ * Leagues Controller
  *
- * @property \App\Model\Table\GamesTable $Games
+ * @property \App\Model\Table\LeaguesTable $Leagues
  *
- * @method \App\Model\Entity\Game[] paginate($object = null, array $settings = [])
+ * @method \App\Model\Entity\League[] paginate($object = null, array $settings = [])
  */
-class GamesController extends AppController
+class LeaguesController extends AppController
 {
 
     /**
@@ -20,10 +20,10 @@ class GamesController extends AppController
      */
     public function index()
     {
-        $games = $this->paginate($this->Games);
+        $leagues = $this->paginate($this->Leagues);
 
-        $this->set(compact('games'));
-        $this->set('_serialize', ['games']);
+        $this->set(compact('leagues'));
+        $this->set('_serialize', ['leagues']);
     }
 
     /**
@@ -33,27 +33,25 @@ class GamesController extends AppController
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function saveApiData($teamId)
+    public function saveApiData()
     {
-        //todo : ここは1チームからの目線で見た年間の試合スケジュール情報
+        //todo : リーグすべての情報を取得
         //データ取得するAPIのURL
-        //チームidでチームを決定
-        $uri = 'http://api.football-data.org/v1/teams/'. $teamId .'/fixtures';
+        $uri = 'http://api.football-data.org/v1/competitions';
         $apiData = $this->GetApiData->getApi($uri);
 
         $hasError = false;
-        foreach ($apiData->fixtures as $data) {
-        //API取得したデータをカラムに合わせる
-        $saveData = $this->Games->makeSaveQuery($data);
+        foreach ($apiData as $data) {
+            //API取得したデータをカラムに合わせる
+            $saveData = $this->Leagues->makeSaveQuery($data);
 
-        //保存
-        //insertもupdateもあり得る。→いずれにせよ、idを指定する。
+            //保存
             $id = $saveData['id'];
-            $game = $this->Games->newEntity();
+            $league = $this->Leagues->newEntity();
             //newEntityしたため、id再指定
-            $game['id'] = $id;
-            $d = $this->Games->patchEntity($game, $saveData);
-            if (!$this->Games->save($d)) {
+            $league['id'] = $id;
+            $d = $this->Leagues->patchEntity($league, $saveData);
+            if (!$this->Leagues->save($d)) {
                 $this->log($id.'not saved');
                 $hasError = true;
             }
@@ -69,21 +67,22 @@ class GamesController extends AppController
 
     }
 
+
     /**
      * View method
      *
-     * @param string|null $id Game id.
+     * @param string|null $id League id.
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function view($id = null)
     {
-        $game = $this->Games->get($id, [
+        $league = $this->Leagues->get($id, [
             'contain' => []
         ]);
 
-        $this->set('game', $game);
-        $this->set('_serialize', ['game']);
+        $this->set('league', $league);
+        $this->set('_serialize', ['league']);
     }
 
     /**
@@ -93,60 +92,60 @@ class GamesController extends AppController
      */
     public function add()
     {
-        $game = $this->Games->newEntity();
+        $league = $this->Leagues->newEntity();
         if ($this->request->is('post')) {
-            $game = $this->Games->patchEntity($game, $this->request->getData());
-            if ($this->Games->save($game)) {
-                $this->Flash->success(__('The game has been saved.'));
+            $league = $this->Leagues->patchEntity($league, $this->request->getData());
+            if ($this->Leagues->save($league)) {
+                $this->Flash->success(__('The league has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The game could not be saved. Please, try again.'));
+            $this->Flash->error(__('The league could not be saved. Please, try again.'));
         }
-        $this->set(compact('game'));
-        $this->set('_serialize', ['game']);
+        $this->set(compact('league'));
+        $this->set('_serialize', ['league']);
     }
 
     /**
      * Edit method
      *
-     * @param string|null $id Game id.
+     * @param string|null $id League id.
      * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
     {
-        $game = $this->Games->get($id, [
+        $league = $this->Leagues->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $game = $this->Games->patchEntity($game, $this->request->getData());
-            if ($this->Games->save($game)) {
-                $this->Flash->success(__('The game has been saved.'));
+            $league = $this->Leagues->patchEntity($league, $this->request->getData());
+            if ($this->Leagues->save($league)) {
+                $this->Flash->success(__('The league has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('The game could not be saved. Please, try again.'));
+            $this->Flash->error(__('The league could not be saved. Please, try again.'));
         }
-        $this->set(compact('game'));
-        $this->set('_serialize', ['game']);
+        $this->set(compact('league'));
+        $this->set('_serialize', ['league']);
     }
 
     /**
      * Delete method
      *
-     * @param string|null $id Game id.
+     * @param string|null $id League id.
      * @return \Cake\Http\Response|null Redirects to index.
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $game = $this->Games->get($id);
-        if ($this->Games->delete($game)) {
-            $this->Flash->success(__('The game has been deleted.'));
+        $league = $this->Leagues->get($id);
+        if ($this->Leagues->delete($league)) {
+            $this->Flash->success(__('The league has been deleted.'));
         } else {
-            $this->Flash->error(__('The game could not be deleted. Please, try again.'));
+            $this->Flash->error(__('The league could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
