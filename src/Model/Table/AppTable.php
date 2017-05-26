@@ -66,12 +66,25 @@ abstract class AppTable extends Table
     }
 
     /**
-     * fetchTeamLinkId
+     * fetchSelfTeamLinkId
      * チームのidをリンクから取り出す
      * @author hirosawa
      */
-    public function fetchTeamLinkId($data) {
+    public function fetchSelfTeamLinkId($data) {
         $selfLink = strstr($data->_links->self->href, 'teams/',false);
+        $selfId = intval(str_replace('teams/','',$selfLink));
+
+        return $selfId;
+    }
+
+    /**
+     * fetchTeamLinkId
+     * チームのidをリンクから取り出す（特殊）
+     *
+     * @author hirosawa
+     */
+    public function fetchTeamLinkId($data) {
+        $selfLink = strstr($data->_links->team->href, 'teams/',false);
         $selfId = intval(str_replace('teams/','',$selfLink));
 
         return $selfId;

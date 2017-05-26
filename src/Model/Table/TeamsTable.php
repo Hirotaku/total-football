@@ -108,7 +108,7 @@ class TeamsTable extends AppTable
     {
         $saveData = [];
         //自身のidの取り出し
-        $selfId = $this->fetchTeamLinkId($data);
+        $selfId = $this->fetchSelfTeamLinkId($data);
         $saveData['id'] = $selfId;
 
         //値をセット

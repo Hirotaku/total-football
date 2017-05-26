@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Table\AppTable;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
@@ -21,7 +22,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class PlayersTable extends Table
+class PlayersTable extends AppTable
 {
 
     /**
@@ -95,5 +96,26 @@ class PlayersTable extends Table
         $rules->add($rules->existsIn(['team_id'], 'Teams'));
 
         return $rules;
+    }
+
+    /**
+     * makeSaveQuery
+     *
+     */
+    public function makeSaveQuery($data,$apiData)
+    {
+        $saveData = [];
+        //team_idの取り出し（この配列だけ取れる階層が上のため、ここで取得）
+        $teamId = $this->fetchTeamLinkId($apiData);
+        $saveData['team_id'] = $teamId;
+
+        //値をセット
+        $saveData['name'] = $data->name;
+        $saveData['position'] = $data->position;
+        $saveData['number'] = $data->jerseyNumber;
+        $saveData['birthday'] = $data->dateOfBirth;
+        $saveData['nationality'] = $data->nationality;
+
+        return $saveData;
     }
 }
