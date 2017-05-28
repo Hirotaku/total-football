@@ -37,6 +37,11 @@ class GamesTable extends AppTable
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        //relations
+        $this->belongsTo('Leagues', ['foreignKey' => 'league_id']);
+        $this->belongsTo('HomeTeams', ['className' => 'Teams','foreignKey' => 'home_team_id', 'propertyName' => 'home_team']);
+        $this->belongsTo('AwayTeams', ['className' => 'Teams','foreignKey' => 'away_team_id', 'propertyName' => 'away_team']);
+
         $this->addBehavior('Timestamp');
     }
 

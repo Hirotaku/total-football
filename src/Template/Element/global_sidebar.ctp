@@ -18,12 +18,12 @@
                 </a>
             </li>
             <li>
-                <a href="<?= $this->Url->build(['controller' => 'leagues', 'action' => 'index']); ?>">
+                <a href="<?= $this->Url->build(['controller' => 'teams', 'action' => 'index']); ?>">
                     <span>Team</span>
                 </a>
             </li>
             <li>
-                <a href="<?= $this->Url->build(['controller' => 'leagues', 'action' => 'index']); ?>">
+                <a href="<?= $this->Url->build(['controller' => 'players', 'action' => 'index']); ?>">
                     <span>Player</span>
                 </a>
             </li>
