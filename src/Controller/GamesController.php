@@ -118,14 +118,14 @@ class GamesController extends AppController
     public function edit($id = null)
     {
         $game = $this->Games->get($id, [
-            'contain' => []
+            'contain' => ['Leagues', 'HomeTeams','AwayTeams']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $game = $this->Games->patchEntity($game, $this->request->getData());
             if ($this->Games->save($game)) {
                 $this->Flash->success(__('The game has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $id]);
             }
             $this->Flash->error(__('The game could not be saved. Please, try again.'));
         }
