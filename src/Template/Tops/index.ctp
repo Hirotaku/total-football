@@ -22,13 +22,13 @@
                     <div class="icon">
 <!--                        <i class="ion ion-bag"></i>-->
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?= $this->Url->build(['controller' => 'games', 'action' => 'view', $pickUpGames->id]); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
         </div>
 
         <h2>
-            Latest Match
+            Latest Matches
             <small></small>
         </h2>
         <!-- Small boxes (Stat box) -->
@@ -52,7 +52,7 @@
                     <div class="icon">
                         <!--                        <i class="ion ion-bag"></i>-->
                     </div>
-                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                    <a href="<?= $this->Url->build(['controller' => 'games', 'action' => 'view', $latestGame->id]); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <?php endforeach; ?>

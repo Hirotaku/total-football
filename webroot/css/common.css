@@ -1,0 +1,19 @@
+.data-box{
+    text-align: center;
+}
+
+.comment-box{
+    text-align: center;
+}
+
+.comment-form {
+    width: 60%;
+}
+
+.home-crest {
+    float: right;
+}
+
+.away-crest {
+    float: left;
+}

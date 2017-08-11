@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Game;
 
 /**
  * Games Controller
@@ -79,7 +80,7 @@ class GamesController extends AppController
     public function view($id = null)
     {
         $game = $this->Games->get($id, [
-            'contain' => []
+            'contain' => ['Leagues', 'HomeTeams','AwayTeams']
         ]);
 
         $this->set('game', $game);

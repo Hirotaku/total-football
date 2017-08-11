@@ -17,6 +17,7 @@
     <?= $this->Html->css('AdminLTE.min.css') ?>
     <?= $this->Html->css('skins/skin-red.min.css') ?>
     <?= $this->Html->css('../plugins/select2/select2.min.css'); ?>
+    <?= $this->Html->css('common.css'); ?>
 
     <?= $this->Html->script('../plugins/jQuery/jquery-2.2.3.min.js'); ?>
     <?= $this->Html->script('../plugins/select2/select2.full.min.js'); ?>
