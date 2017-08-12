@@ -34,12 +34,12 @@ class TopsController extends AppController
             ->Contain(['Leagues','HomeTeams','AwayTeams'])
             ->first();
 
-        //直近3試合取得
+        //直近6試合取得
         $latestGames = $this->Games->find()
             ->Where(['status' => 'FINISHED'])
             ->Order(['date' => 'DESC'])
             ->Contain(['Leagues','HomeTeams','AwayTeams'])
-            ->limit(3)
+            ->limit(6)
             ->all();
 
         $this->set(compact('pickUpGames','latestGames'));
