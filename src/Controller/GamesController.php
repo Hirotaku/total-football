@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use App\Model\Entity\Game;
 
 /**
  * Games Controller
@@ -79,7 +80,7 @@ class GamesController extends AppController
     public function view($id = null)
     {
         $game = $this->Games->get($id, [
-            'contain' => []
+            'contain' => ['Leagues', 'HomeTeams','AwayTeams']
         ]);
 
         $this->set('game', $game);
@@ -117,14 +118,14 @@ class GamesController extends AppController
     public function edit($id = null)
     {
         $game = $this->Games->get($id, [
-            'contain' => []
+            'contain' => ['Leagues', 'HomeTeams','AwayTeams']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $game = $this->Games->patchEntity($game, $this->request->getData());
             if ($this->Games->save($game)) {
                 $this->Flash->success(__('The game has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'view', $id]);
             }
             $this->Flash->error(__('The game could not be saved. Please, try again.'));
         }

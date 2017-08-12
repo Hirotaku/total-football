@@ -28,4 +28,26 @@ class Game extends Entity
         '*' => true,
         'id' => false
     ];
+
+    /*
+     * 後半ゴール数（ホームチーム）
+     *
+     */
+    public function _getSecondHalfGoalsHomeTeam()
+    {
+        $secondGoals = $this->_properties['goals_home_team'] - $this->_properties['half_goals_home_team'];
+
+        return $secondGoals;
+    }
+
+    /*
+     * 後半ゴール数（アウェイチーム）
+     *
+     */
+    protected function _getSecondHalfGoalsAwayTeam()
+    {
+        $secondGoals = $this->_properties['goals_away_team'] - $this->_properties['half_goals_away_team'];
+
+        return $secondGoals;
+    }
 }

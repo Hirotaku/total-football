@@ -15,8 +15,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
     <?= $this->Html->css('AdminLTE.min.css') ?>
-    <?= $this->Html->css('skins/skin-blue-light.min.css') ?>
+    <?= $this->Html->css('skins/skin-red.min.css') ?>
     <?= $this->Html->css('../plugins/select2/select2.min.css'); ?>
+    <?= $this->Html->css('common.css'); ?>
 
     <?= $this->Html->script('../plugins/jQuery/jquery-2.2.3.min.js'); ?>
     <?= $this->Html->script('../plugins/select2/select2.full.min.js'); ?>
@@ -26,9 +27,15 @@
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
-<body class="skin-blue-light layout-top-nav">
+<!--<body class="skin-blue-light layout-top-nav">-->
+<body class="hold-transition skin-red sidebar-mini">
+<div class="wrapper">
 <?= $this->element('global_header') ?>
+<?= $this->element('global_sidebar') ?>
+    <div class="content-wrapper">
 <?= $this->Flash->render(); ?>
 <?= $this->fetch('content') ?>
+    </div>
+</div>
 </body>
 </html>
