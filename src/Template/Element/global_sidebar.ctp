@@ -13,6 +13,11 @@
                 </a>
             </li>
             <li>
+                <a href="<?= $this->Url->build(['controller' => 'games', 'action' => 'index']); ?>">
+                    <span>Game</span>
+                </a>
+            </li>
+            <li>
                 <a href="<?= $this->Url->build(['controller' => 'leagues', 'action' => 'index']); ?>">
                 <span>League</span>
                 </a>

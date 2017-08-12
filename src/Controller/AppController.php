@@ -28,6 +28,10 @@ use Cake\Event\Event;
 class AppController extends Controller
 {
 
+    public $paginate = [
+        'limit' => 10,
+    ];
+
     /**
      * Initialization hook method.
      *

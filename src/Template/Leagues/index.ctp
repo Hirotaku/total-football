@@ -1,66 +1,63 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New League'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Games'), ['controller' => 'Games', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Game'), ['controller' => 'Games', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Teams'), ['controller' => 'Teams', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Team'), ['controller' => 'Teams', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="leagues index large-9 medium-8 columns content">
-    <h3><?= __('Leagues') ?></h3>
-    <table cellpadding="0" cellspacing="0">
-        <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('code') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('year') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('current_matchday') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('number_of_teams') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('deleted') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('deleted_date') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($leagues as $league): ?>
-            <tr>
-                <td><?= $this->Number->format($league->id) ?></td>
-                <td><?= h($league->name) ?></td>
-                <td><?= h($league->code) ?></td>
-                <td><?= h($league->year) ?></td>
-                <td><?= h($league->current_matchday) ?></td>
-                <td><?= h($league->number_of_teams) ?></td>
-                <td><?= h($league->deleted) ?></td>
-                <td><?= h($league->deleted_date) ?></td>
-                <td><?= h($league->created) ?></td>
-                <td><?= h($league->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $league->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $league->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $league->id], ['confirm' => __('Are you sure you want to delete # {0}?', $league->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <div class="paginator">
-        <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
-        </ul>
-        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+<div class="admins index large-9 medium-8 columns content">
+    <div class="col-xs-12">
+        <div class="box">
+            <h2 class="box-title title-large">　リーグ情報</h2>
+            <div class="box-body search-block">
+                <?= $this->Form->create(); ?>
+                <table class="table search-table table-bordered table-hover">
+                    <tbody>
+                    <tr>
+                        <th><?= 'id' ?></th>
+                        <th><?= 'リーグ名' ?></th>
+                        <th><?= '年' ?></th>
+                        <th><?= $this->Form->button(__('clear'), ['type' => 'button', 'class' => 'btn-reset']); ?></th>
+                    </tr>
+                    <tr>
+                        <td><?= $this->Form->input('id', ['type' => 'number', 'label' => false, 'empty' => true, 'class' => 'form-search']); ?></td>
+                        <td><?= $this->Form->input('name', ['label' => false, 'empty' => true, 'class' => 'form-search']); ?></td>
+                        <td><?= $this->Form->input('year', ['label' => false, 'empty' => true, 'class' => 'form-search']); ?></td>
+                        <td><button type="submit" class="btn btn-default"><i class="fa fa-search"><?= __('search')?></i></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <?= $this->Form->end(); ?>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('name', 'リーグ名') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('code', '略称') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('year', '年') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('current_matchday', '節数') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('number_of_teams', 'チーム数') ?></th>
+                        <th scope="col" class="actions">
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($leagues as $league): ?>
+                        <tr>
+                            <td><?= h($league->id) ?></td>
+                            <td><?= h($league->name) ?></td>
+                            <td><?= h($league->code) ?></td>
+                            <td><?= h($league->year) ?></td>
+                            <td><?= h($league->current_matchday) ?></td>
+                            <td><?= h($league->number_of_teams) ?></td>
+                            <td class="actions">
+                                <?= $this->Html->link(__('view'), ['action' => 'view', $league->id], ['class' => 'btn btn-default']) ?>
+                                <?= $this->Html->link(__('edit'), ['action' => 'edit', $league->id],['class' => 'btn btn-warning']) ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+        <?= $this->element('pagenator') ?>
     </div>
 </div>

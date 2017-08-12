@@ -20,6 +20,9 @@ class LeaguesController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'order' => ['id' => 'DESC']
+        ];
         $leagues = $this->paginate($this->Leagues);
 
         $this->set(compact('leagues'));
