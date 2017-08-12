@@ -21,6 +21,10 @@ class GamesController extends AppController
      */
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Leagues', 'HomeTeams','AwayTeams'],
+            'order' => ['Games.id' => 'DESC']
+        ];
         $games = $this->paginate($this->Games);
 
         $this->set(compact('games'));
