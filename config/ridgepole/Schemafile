@@ -44,6 +44,7 @@ create_table "teams", force: :cascade do |t|
   t.string   "code",                             comment:"略称"
   t.string   "short_name",                       comment:"略称"
   t.string   "crest_url",                        comment:"エンブレム画像URL"
+  t.boolean  "favorite",                         comment:"お気に入りフラグ"
 
   t.boolean  "deleted",      default: false,    comment:"削除フラグ"
   t.datetime "deleted_date",                    comment:"削除日時"

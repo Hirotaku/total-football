@@ -32,10 +32,11 @@
             </li>
 
 
-            <li class="header">CONFIG</li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>getLeagueData</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>getTeamData</span></a></li>
-            <li><a href="#"><i class="fa fa-circle-o text-aqua"></i> <span>getPlayerData</span></a></li>
+            <li class="header">UPDATE</li>
+            <li><a href="<?= $this->Url->build(['controller' => 'links', 'action' => 'getGame']); ?>"><i class="fa fa-circle-o text-aqua"></i> <span>試合情報更新</span></a></li>
+            <li><a href="<?= $this->Url->build(['controller' => 'links', 'action' => 'getLeague']); ?>"><i class="fa fa-circle-o text-aqua"></i> <span>リーグ情報更新</span></a></li>
+            <li><a href="<?= $this->Url->build(['controller' => 'links', 'action' => 'getTeam']); ?>"><i class="fa fa-circle-o text-aqua"></i> <span>チーム情報更新</span></a></li>
+            <li><a href="<?= $this->Url->build(['controller' => 'links', 'action' => 'getPlayer']); ?>"><i class="fa fa-circle-o text-aqua"></i> <span>プレイヤー情報更新</span></a></li>
         </ul>
     </section>
     <!-- /.sidebar -->
