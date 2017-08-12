@@ -22,6 +22,7 @@
     <?= $this->Html->script('../plugins/jQuery/jquery-2.2.3.min.js'); ?>
     <?= $this->Html->script('../plugins/select2/select2.full.min.js'); ?>
     <?= $this->Html->script('../plugins/select2/i18n/ja.js'); ?>
+    <?= $this->Html->script('select2.js'); ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
