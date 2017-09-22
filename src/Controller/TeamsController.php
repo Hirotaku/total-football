@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Teams Controller
@@ -20,10 +21,10 @@ class TeamsController extends AppController
      */
     public function index()
     {
-        $teams = $this->paginate($this->Teams);
+        $entities = $this->paginate($this->Teams);
 
-        $this->set(compact('teams'));
-        $this->set('_serialize', ['teams']);
+        $this->set(compact('entities'));
+        $this->set('_serialize', ['entities']);
     }
 
     /**
@@ -67,7 +68,7 @@ class TeamsController extends AppController
             $this->Flash->success(__('saved'));
 
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Leagues', 'action' => 'view', $leagueId]);
 
     }
 
@@ -81,12 +82,15 @@ class TeamsController extends AppController
      */
     public function view($id = null)
     {
-        $team = $this->Teams->get($id, [
-            'contain' => []
+        $entity = $this->Teams->get($id, [
+            'contain' => ['Leagues', 'Players'],
+            'Order' => [
+                'Players.number' => 'ASC'
+            ]
         ]);
 
-        $this->set('team', $team);
-        $this->set('_serialize', ['team']);
+        $this->set('entity', $entity);
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -96,18 +100,18 @@ class TeamsController extends AppController
      */
     public function add()
     {
-        $team = $this->Teams->newEntity();
+        $entity = $this->Teams->newEntity();
         if ($this->request->is('post')) {
-            $team = $this->Teams->patchEntity($team, $this->request->getData());
-            if ($this->Teams->save($team)) {
+            $entity = $this->Teams->patchEntity($entity, $this->request->getData());
+            if ($this->Teams->save($entity)) {
                 $this->Flash->success(__('The team has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The team could not be saved. Please, try again.'));
         }
-        $this->set(compact('team'));
-        $this->set('_serialize', ['team']);
+        $this->set(compact('entity'));
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -119,20 +123,23 @@ class TeamsController extends AppController
      */
     public function edit($id = null)
     {
-        $team = $this->Teams->get($id, [
+        $entity = $this->Teams->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $team = $this->Teams->patchEntity($team, $this->request->getData());
-            if ($this->Teams->save($team)) {
+            $entity = $this->Teams->patchEntity($entity, $this->request->getData());
+            if ($this->Teams->save($entity)) {
                 $this->Flash->success(__('The team has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The team could not be saved. Please, try again.'));
         }
-        $this->set(compact('team'));
-        $this->set('_serialize', ['team']);
+        //マスタをセット
+        $this->setMasterOptions();
+
+        $this->set(compact('entity'));
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -145,13 +152,58 @@ class TeamsController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $team = $this->Teams->get($id);
-        if ($this->Teams->delete($team)) {
+        $entity = $this->Teams->get($id);
+        if ($this->Teams->delete($entity)) {
             $this->Flash->success(__('The team has been deleted.'));
         } else {
             $this->Flash->error(__('The team could not be deleted. Please, try again.'));
         }
 
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function setMasterOptions()
+    {
+        $team = TableRegistry::get('Teams');
+        $teams = $team->find('list')
+            ->select(['id', 'name'])
+            ->order(['id' => 'ASC'])
+            ->all();
+        $league = TableRegistry::get('Leagues');
+        $leagues = $league->find('list')
+            ->select(['id', 'name'])
+            ->order(['id' => 'DESC'])
+            ->all();
+
+        $this->set(compact('teams'));
+        $this->set(compact('leagues'));
+    }
+
+    public function addFavorite($teamId)
+    {
+        $this->autoRender = false;
+        $entity = $this->Teams->get($teamId, [
+            'contain' => []
+        ]);
+        $entity->id = $teamId;
+        $entity->favorite = true;
+        if ($this->Teams->save($entity)) {
+            return $this->redirect(['action' => 'view', $teamId]);
+        }
+        $this->Flash->error(__('The team could not be saved. Please, try again.'));
+    }
+
+    public function outFavorite($teamId)
+    {
+        $this->autoRender = false;
+        $entity = $this->Teams->get($teamId, [
+            'contain' => []
+        ]);
+        $entity->id = $teamId;
+        $entity->favorite = false;
+        if ($this->Teams->save($entity)) {
+            return $this->redirect(['action' => 'view', $teamId]);
+        }
+        $this->Flash->error(__('The team could not be saved. Please, try again.'));
     }
 }

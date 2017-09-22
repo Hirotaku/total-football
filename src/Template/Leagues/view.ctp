@@ -11,6 +11,9 @@
           <td><?= h($entity->current_matchday) ?></td>
           <th scope="row"><?= __('Number Of Teams') ?></th>
           <td><?= h($entity->number_of_teams) ?></td>
+          <td>
+              <?= $this->Html->link(__('update'), ['controller' => 'Teams', 'action' => 'saveApiData', $entity->id], ['class' => 'btn btn-sm btn-default']) ?>
+          </td>
         </tr>
     </table>
   </div>
@@ -39,5 +42,5 @@
             <?php endforeach; ?>
         </table>
         <?php endif; ?>
-    </div>
+  </div>
 </div>

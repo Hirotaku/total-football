@@ -1,0 +1,15 @@
+.fix-img-circle {
+  display: inline-block;
+  width: 90px!important;
+  height: 90px!important;
+  position: relative;
+  overflow: hidden;
+}
+
+.fix-bg-aqua-active {
+  background-color: #c0c2c5!important;
+}
+
+.widget-text {
+  padding-left: 100px;
+}
