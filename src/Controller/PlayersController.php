@@ -62,7 +62,7 @@ class PlayersController extends AppController
             $this->Flash->success(__('saved'));
 
         }
-        return $this->redirect(['action' => 'index']);
+        return $this->redirect(['controller' => 'Teams', 'action' => 'view', $teamId]);
 
     }
 

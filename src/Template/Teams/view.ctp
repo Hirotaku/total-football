@@ -1,104 +1,90 @@
-<?php
-/**
-  * @var \App\View\AppView $this
-  */
-?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Team'), ['action' => 'edit', $team->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Team'), ['action' => 'delete', $team->id], ['confirm' => __('Are you sure you want to delete # {0}?', $team->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Teams'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Team'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Leagues'), ['controller' => 'Leagues', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New League'), ['controller' => 'Leagues', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Players'), ['controller' => 'Players', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Player'), ['controller' => 'Players', 'action' => 'add']) ?> </li>
-    </ul>
-</nav>
-<div class="teams view large-9 medium-8 columns content">
-    <h3><?= h($team->name) ?></h3>
-    <table class="vertical-table">
-        <tr>
-            <th scope="row"><?= __('League') ?></th>
-            <td><?= $team->has('league') ? $this->Html->link($team->league->name, ['controller' => 'Leagues', 'action' => 'view', $team->league->id]) : '' ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Name') ?></th>
-            <td><?= h($team->name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Code') ?></th>
-            <td><?= h($team->code) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Short Name') ?></th>
-            <td><?= h($team->short_name) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Crest Url') ?></th>
-            <td><?= h($team->crest_url) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Id') ?></th>
-            <td><?= $this->Number->format($team->id) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Deleted Date') ?></th>
-            <td><?= h($team->deleted_date) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Created') ?></th>
-            <td><?= h($team->created) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Modified') ?></th>
-            <td><?= h($team->modified) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Deleted') ?></th>
-            <td><?= $team->deleted ? __('Yes') : __('No'); ?></td>
-        </tr>
-    </table>
-    <div class="related">
-        <h4><?= __('Related Players') ?></h4>
-        <?php if (!empty($team->players)): ?>
-        <table cellpadding="0" cellspacing="0">
-            <tr>
-                <th scope="col"><?= __('Id') ?></th>
-                <th scope="col"><?= __('Team Id') ?></th>
-                <th scope="col"><?= __('Name') ?></th>
-                <th scope="col"><?= __('Position') ?></th>
-                <th scope="col"><?= __('Number') ?></th>
-                <th scope="col"><?= __('Birthday') ?></th>
-                <th scope="col"><?= __('Nationality') ?></th>
-                <th scope="col"><?= __('Deleted') ?></th>
-                <th scope="col"><?= __('Deleted Date') ?></th>
-                <th scope="col"><?= __('Created') ?></th>
-                <th scope="col"><?= __('Modified') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
-            </tr>
-            <?php foreach ($team->players as $players): ?>
-            <tr>
-                <td><?= h($players->id) ?></td>
-                <td><?= h($players->team_id) ?></td>
-                <td><?= h($players->name) ?></td>
-                <td><?= h($players->position) ?></td>
-                <td><?= h($players->number) ?></td>
-                <td><?= h($players->birthday) ?></td>
-                <td><?= h($players->nationality) ?></td>
-                <td><?= h($players->deleted) ?></td>
-                <td><?= h($players->deleted_date) ?></td>
-                <td><?= h($players->created) ?></td>
-                <td><?= h($players->modified) ?></td>
-                <td class="actions">
-                    <?= $this->Html->link(__('View'), ['controller' => 'Players', 'action' => 'view', $players->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['controller' => 'Players', 'action' => 'edit', $players->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['controller' => 'Players', 'action' => 'delete', $players->id], ['confirm' => __('Are you sure you want to delete # {0}?', $players->id)]) ?>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </table>
+<!-- Widget: user widget style 1 -->
+<div class="box box-widget widget-user">
+  <!-- Add the bg color to the header using any of the bg-* classes -->
+  <div class="widget-user-header bg-aqua-active fix-bg-aqua-active">
+    <img class="fix-img-circle" src="<?= $entity->crest_url?>" alt="User Avatar" style="float: left">
+    <h3 class="widget-user-username widget-text">
+        <?= $entity->name ?>
+        <?php if ($entity->favorite == true): ?>
+          <a href="<?= $this->Url->build(["controller" => "Teams", "action" => "outFavorite", $entity->id]); ?>">
+            <i class="fa fa-fw fa-star" style="color: yellow"></i>
+          </a>
+        <?php else: ?>
+          <a href="<?= $this->Url->build(["controller" => "Teams", "action" => "addFavorite", $entity->id]); ?>">
+            <i class="fa fa-fw fa-star-o" style="color: white"></i>
+          </a>
         <?php endif; ?>
+    </h3>
+    <h5 class="widget-user-desc widget-text">
+        <?= $entity->has('league') ? $entity->league->name : '' ?>
+    </h5>
+    <h5 class="widget-user-desc widget-text"><?= $entity->code?></h5>
+  </div>
+  <div class="box-footer">
+    <div class="row">
+      <div class="col-sm-4 border-right">
+        <div class="description-block">
+          <h5 class="description-header">UPDATE PLAYER DATA</h5>
+          <span class="description-text">
+            <?= $this->Html->link(__('update'), ['controller' => 'Players', 'action' => 'saveApiData', $entity->id], ['class' => 'btn btn-sm btn-default']) ?>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-4 border-right">
+        <div class="description-block">
+          <h5 class="description-header">GAME SCHEDULE</h5>
+          <span class="description-text">
+            <?= $this->Html->link(__('GO TO SCHEDULE'), ['controller' => 'Games', 'action' => 'teamIndex', $entity->id], ['class' => 'btn btn-sm btn-default']) ?>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="description-block">
+          <h5 class="description-header">UPDATE GAME DATA</h5>
+          <span class="description-text">
+            <?php if ($entity->favorite == true): ?>
+              <?= $this->Html->link(__('update'), ['controller' => 'Games', 'action' => 'saveApiData', $entity->id], ['class' => 'btn btn-sm btn-default']) ?>
+            <img src="">
+            <?php else:; ?>
+              <?= $this->Html->link(__('ADD'), ['action' => 'addFavorite', $entity->id], ['class' => 'btn btn-sm btn-default']) ?>
+            <?php endif; ?>
+          </span>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+<!-- /.widget-user -->
+
+<div class="leagues view large-9 medium-8 columns content">
+  <div class="box box-default box-edit">
+      <h4><?= __('Players') ?></h4>
+      <?php if (!empty($entity->players)): ?>
+        <table class="table table-bordered table-hover">
+          <tr>
+            <th scope="col"><?= __('Number') ?></th>
+            <th scope="col"><?= __('Position') ?></th>
+            <th scope="col"><?= __('Name') ?></th>
+            <th scope="col"><?= __('Nationality') ?></th>
+            <th scope="col"><?= __('Birthday') ?></th>
+            <th scope="col" class="actions"><?= __('Actions') ?></th>
+          </tr>
+          <?php foreach ($entity->players as $players): ?>
+          <tr>
+            <td><?= h($players->number) ?></td>
+            <td><?= h($players->position) ?></td>
+            <td><?= h($players->name) ?></td>
+            <td><?= h($players->nationality) ?></td>
+            <td><?= h($players->birthday) ?></td>
+            <td class="actions">
+                  <?= $this->Html->link(__('view'), ['controller' => 'Players', 'action' => 'view', $players->id], ['class' => 'btn btn-sm btn-default']) ?>
+                  <?= $this->Html->link(__('edit'), ['controller' => 'Players', 'action' => 'edit', $players->id], ['class' => 'btn btn-sm btn-warning']) ?>
+            </td>
+          </tr>
+          <?php endforeach; ?>
+      </table>
+      <?php endif; ?>
+  </div>
+</div>
+
+<?= $this->Html->css('Teams/view.css'); ?>

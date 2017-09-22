@@ -26,17 +26,29 @@ class TopsController extends AppController
      */
     public function index()
     {
-//        $games = $this->paginate($this->Games);
         //最新試合前
         $pickUpGames = $this->Games->find()
-            ->Where(['status' => 'TIMED'])
+            ->Where([
+                'Games.status' => 'TIMED',
+                'OR' => [
+                    'HomeTeams.favorite' => true,
+                    'AwayTeams.favorite' => true,
+                ]
+            ])
             ->Order(['date' => 'DESC'])
             ->Contain(['Leagues','HomeTeams','AwayTeams'])
-            ->first();
+            ->limit(2)
+            ->all();
 
         //直近6試合取得
         $latestGames = $this->Games->find()
-            ->Where(['status' => 'FINISHED'])
+            ->Where([
+                'Games.status' => 'FINISHED',
+                'OR' => [
+                    'HomeTeams.favorite' => true,
+                    'AwayTeams.favorite' => true,
+                ]
+            ])
             ->Order(['date' => 'DESC'])
             ->Contain(['Leagues','HomeTeams','AwayTeams'])
             ->limit(6)
