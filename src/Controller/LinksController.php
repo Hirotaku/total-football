@@ -47,7 +47,7 @@ class LinksController extends AppController
         $this->setMasterOptions();
 
         if ($this->request->is('post')) {
-            $this->redirect(['controller' => 'teams', 'action' => 'saveApiData']);
+            $this->redirect(['controller' => 'teams', 'action' => 'saveApiData', $this->request->data('league_id')]);
         }
     }
 
@@ -67,12 +67,12 @@ class LinksController extends AppController
 //            ->where(['favorite' => true])
             ->select(['id', 'name'])
             ->order(['favorite' => 'ASC', 'id' => 'ASC'])
-            ->toArray();
+            ->all();
         $league = TableRegistry::get('Leagues');
         $leagues = $league->find('list')
             ->select(['id', 'name'])
             ->order(['id' => 'DESC'])
-            ->toArray();
+            ->all();
 
         $this->set(compact(['teams', 'leagues']));
     }
