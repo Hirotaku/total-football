@@ -20,10 +20,10 @@ class LeaguesController extends AppController
      */
     public function index()
     {
-        $leagues = $this->paginate($this->Leagues);
+        $entities = $this->paginate($this->Leagues);
 
-        $this->set(compact('leagues'));
-        $this->set('_serialize', ['leagues']);
+        $this->set(compact('entities'));
+        $this->set('_serialize', ['entities']);
     }
 
     /**
@@ -77,12 +77,12 @@ class LeaguesController extends AppController
      */
     public function view($id = null)
     {
-        $league = $this->Leagues->get($id, [
-            'contain' => []
+        $entity = $this->Leagues->get($id, [
+            'contain' => ['Teams']
         ]);
 
-        $this->set('league', $league);
-        $this->set('_serialize', ['league']);
+        $this->set(compact('entity'));
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -92,18 +92,18 @@ class LeaguesController extends AppController
      */
     public function add()
     {
-        $league = $this->Leagues->newEntity();
+        $entity = $this->Leagues->newEntity();
         if ($this->request->is('post')) {
-            $league = $this->Leagues->patchEntity($league, $this->request->getData());
-            if ($this->Leagues->save($league)) {
+            $entity = $this->Leagues->patchEntity($entity, $this->request->getData());
+            if ($this->Leagues->save($entity)) {
                 $this->Flash->success(__('The league has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The league could not be saved. Please, try again.'));
         }
-        $this->set(compact('league'));
-        $this->set('_serialize', ['league']);
+        $this->set(compact('entity'));
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -115,20 +115,20 @@ class LeaguesController extends AppController
      */
     public function edit($id = null)
     {
-        $league = $this->Leagues->get($id, [
+        $entity = $this->Leagues->get($id, [
             'contain' => []
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            $league = $this->Leagues->patchEntity($league, $this->request->getData());
-            if ($this->Leagues->save($league)) {
+            $entity = $this->Leagues->patchEntity($entity, $this->request->getData());
+            if ($this->Leagues->save($entity)) {
                 $this->Flash->success(__('The league has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The league could not be saved. Please, try again.'));
         }
-        $this->set(compact('league'));
-        $this->set('_serialize', ['league']);
+        $this->set(compact('entity'));
+        $this->set('_serialize', ['entity']);
     }
 
     /**
@@ -141,8 +141,8 @@ class LeaguesController extends AppController
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $league = $this->Leagues->get($id);
-        if ($this->Leagues->delete($league)) {
+        $entity = $this->Leagues->get($id);
+        if ($this->Leagues->delete($entity)) {
             $this->Flash->success(__('The league has been deleted.'));
         } else {
             $this->Flash->error(__('The league could not be deleted. Please, try again.'));
